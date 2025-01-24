@@ -1,0 +1,226 @@
+<!doctype html>
+<html lang="ru">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+
+		<title>reveal.js</title>
+
+		<link rel="stylesheet" href="dist/reset.css">
+		<link rel="stylesheet" href="dist/reveal.css">
+		<link rel="stylesheet" href="dist/theme/black.css">
+
+		<!-- Theme used for syntax highlighted code -->
+		<link rel="stylesheet" href="plugin/highlight/monokai.css">
+		<script src="add.js"></script>
+<style>
+/* CSS */
+.inp-sex {
+  width: "100%"
+  height: "25%"
+  cursor: pointer;
+  font-family: -apple-system,system-ui,"Segoe UI",Roboto,"Helvetica Neue",Ubuntu,sans-serif;
+  font-size: 100%;
+  height: 100%;
+  width: 25%;
+  line-height: 1.15;
+  margin: 12px 0 0;
+  outline: none;
+  padding: 0 10px;
+  position: relative;
+}
+.button-9 {
+  appearance: button;
+  backface-visibility: hidden;
+  background-color: #405cf5;
+  border-radius: 6px;
+  border-width: 0;
+  box-shadow: rgba(50, 50, 93, .1) 0 0 0 1px inset,rgba(50, 50, 93, .1) 0 2px 5px 0,rgba(0, 0, 0, .07) 0 1px 1px 0;
+  box-sizing: border-box;
+  color: #fff;
+  cursor: pointer;
+  font-family: -apple-system,system-ui,"Segoe UI",Roboto,"Helvetica Neue",Ubuntu,sans-serif;
+  font-size: 100%;
+  height: 100%;
+  width: 25%;
+  line-height: 1.15;
+  margin: 12px 0 0;
+  outline: none;
+  overflow: hidden;
+  padding: 0 10px;
+  position: relative;
+  text-align: center;
+  text-transform: none;
+  transform: translateZ(0);
+  transition: all .2s,box-shadow .08s ease-in;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+
+}
+
+.button-9:disabled {
+  cursor: default;
+}
+
+.button-9:focus {
+  box-shadow: rgba(50, 50, 93, .1) 0 0 0 1px inset, rgba(50, 50, 93, .2) 0 6px 15px 0, rgba(0, 0, 0, .1) 0 2px 2px 0, rgba(50, 151, 211, .3) 0 0 0 4px;
+}
+
+.container {
+  position: relative;
+  text-align: center;
+  color: white;
+}
+
+.centered {
+  position: absolute;
+  font-size: 3rem;
+  top: 90%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+    .reveal section p {
+    display: inline-block;
+    font-size: 0.9em;
+    line-height: 1.5em;
+    vertical-align: bottom;
+  }
+
+    .reveal section h1 {
+    display: inline-block;
+    font-size: 1em;
+    line-height: 1.2em;
+    vertical-align: top;
+    white-space: nowrap;
+  }
+</style>
+	
+</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+
+				  <section>
+<div class="container">
+  <img src="anime.gif" alt="oh no lain dead!" style="vertical-align:bottom"/>
+  <div class="centered"><h1>Презентация Wasm</h1></div>
+</div>
+<!--<img src="anime.gif" alt="oh no lain dead!" style="vertical-align:bottom"/>-->
+				<p>
+				выполнил студент -> Минниахметов Р.Н 
+				<br>
+				21ИСР
+				</p>
+				</section>
+
+				  <section>
+				<p>WebAssembly (аббревиатура Wasm) это набор бинарных инструкций для стэковой машины. Wasm создан как портативная среда для языков програмированния, позволяющая размещать себя на клиенте или сервере.</p>
+				</section>
+
+				  <section>
+				<h1>Не интересные факты</h1>
+				<p>
+Парадигма - Стэковая машина<br>
+Разработан - W3C<br>
+Создан
+    W3C
+    Mozilla
+    Microsoft
+    Google
+    Apple
+<br>
+Первое издание - март  2017<br>
+OS - Platform independent<br>
+License - Apache License 2.0<br>
+расширения файлов .wat (text) .wasm (binary)
+сайт	webassembly.org<br>
+Influenced by asm.js PNaCl Lisp<br>
+</p>
+				</section>
+
+				 <section>
+				<h1>Введение</h1>
+<div class="container">
+<img src="cpu.png" alt="fuck!"/>
+</div>
+<p>каждый процессор выполняет свой набор инструкций</p>
+				</section>
+
+				  <section>
+				<h1>Wasm особенный</h1>
+<div class="container">
+<img src="wasmVM.png" alt="fuck!"/>
+</div>
+<p>В отличии от других языков ассемблера он работает где угодно, без изменений</p>
+				</section>
+
+				  <section>
+				<h1>Хватит говорить компилируем Си.</h1>
+				<img src="meme1.jpeg" alt="вай бл#!" />
+				</section>
+				  <section>
+				<h1>Простейшая программа</h1><br>
+<h2>code</h2>
+<code>
+#include &lt;stdio.h&gt<br>
+int main(void){ printf("HELLO WEB!");}
+</code>
+<h2>emcc command</h2>
+<code>emcc hello.c -o hello.js</code>
+
+				</section>
+<section>
+<h1>вот результат</h1><br>
+<input type="button" id="start" value="start" class="button-9" role="button" />
+<script src="hello.js"></script>
+</section>	
+<section>
+
+<script>
+function run_add()
+{
+  console.log = function (message) {
+	var logger = document.getElementById('log');
+        logger.innerHTML += message + ' ';
+    }
+  a=document.querySelector("#a").value
+  b=document.querySelector("#b").value
+  res = Module.ccall("add","numers", ["numbers", "numbers"],[a, b]);  
+  console.log(res);
+}
+</script>
+
+<input class="inp-sex" type="number" id="a">
+<input class="inp-sex" type="number" id="b">
+<button class="button-9" role="button" onclick="run_add()">ADD</button>
+<div id="log">
+<p>команда которой мы собрали это<br>emcc add.c -o add.js -s NO_EXIT_RUNTIME=1 -s EXPORTED_RUNTIME_METHODS=[ccall]</p>
+</div>
+
+</section>
+
+<section>
+
+</section>
+			</div>
+		</div>
+
+		<script src="dist/reveal.js"></script>
+		<script src="plugin/notes/notes.js"></script>
+		<script src="plugin/markdown/markdown.js"></script>
+		<script src="plugin/highlight/highlight.js"></script>
+		<script>
+			// More info about initialization & config:
+			// - https://revealjs.com/initialization/
+			// - https://revealjs.com/config/
+			Reveal.initialize({
+				hash: true,
+
+				// Learn about plugins: https://revealjs.com/plugins/
+				plugins: [ RevealMarkdown, RevealHighlight, RevealNotes ]
+			});
+		</script>
+	</body>
+</html>
