@@ -5,15 +5,19 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
 
-  <title>reveal.js</title>
-
+  <title>WASM!</title>
+  <script src="add.js" type="module"></script>
   <link rel="stylesheet" href="dist/reset.css">
   <link rel="stylesheet" href="dist/reveal.css">
   <link rel="stylesheet" href="dist/theme/black.css">
 
   <!-- Theme used for syntax highlighted code -->
   <link rel="stylesheet" href="plugin/highlight/monokai.css">
-  <script src="add.js"></script>
+<!--
+  
+crhbgns scripts
+
+-->
   <style>
     /* CSS */
     .inp-sex {
@@ -108,7 +112,7 @@
 <section>
 
 <img src="https://api.qrserver.com/v1/create-qr-code/?size=512x512&qzone=1&ecc=L&color=192-200-245&bgcolor=26-27-38&data=gavyt.github.io/Wasm-presentation/" />
-
+<br>можно зайти!
 </section>
 
       <section>
@@ -127,12 +131,13 @@
       </section>
 
       <section>
+        <img width="100em" height="100em" src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1f/WebAssembly_Logo.svg/1200px-WebAssembly_Logo.svg.png" alt="Rostelecom is bullshit!"/>
         <p>WebAssembly (аббревиатура Wasm) это набор бинарных инструкций для стэковой машины. Wasm создан как
           портативная среда для языков програмированния, позволяющая размещать себя на клиенте или сервере.</p>
       </section>
 
       <section>
-        <h1>Не интересные факты</h1>
+        <h1>Не интересные факты</h1><br>
         <p>
           Парадигма - Стэковая машина<br>
           Разработан - W3C<br>
@@ -150,10 +155,11 @@
           сайт webassembly.org<br>
           Influenced by asm.js PNaCl Lisp<br>
         </p>
-      </section>
-<section>
+        <!--<img src="https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExMDFpN2w5d3Z4ODkwbGRpd3F2dmg5NjNiajl5OGV1bDY4cGVvNTN3aCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/GdRG4WHGgmNTq/giphy.gif" alt="no way!">-->
+    </section>
+<!--<section>
   <img src ="https://markfaction.files.wordpress.com/2012/07/stackadd.png"/>
-</section>
+</section>-->
       <section>
         <h1>Введение</h1>
         <div class="container">
@@ -171,7 +177,7 @@
       </section>
 
 
-        <section>
+        <!--<section>
           <h1>asm.js предок wasm</h1><br>
           <p style="text-align: left;" id="i1">
             asm.js это подмножество JavaScript разработанный для языков с возможностью управлять памятью<br>
@@ -189,24 +195,23 @@
             src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/00/AssemblyScript_logo_2020.svg/128px-AssemblyScript_logo_2020.svg.png"
             alt="fuck!" />
           <p>так же стоит упомянуть, компилятор позволяет TypeScript компилировать в Wasm</p>
-        </section>
+        </section>-->
         <section>
           <h1>Хватит говорить компилируем Си.</h1>
           <img src="meme1.jpeg" alt="вай бл#!" />
         </section>
         <section>
           <h1>Простейшая программа</h1><br>
-          <h2>code</h2>
-          <code>
-  #include &lt; stdio.h &gt;<br>
-  int main(void){ printf("HELLO WEB!");}
-  </code>
-          <h2>emcc command</h2>
-          <code>&gt; emcc hello.c -o hello.js</code>
-  
-        </section>
-        <section>
-          <h1>вот результат</h1><br>
+          <div id="" style="overflow-y:auto;">
+            <pre><code>
+              #include &lt; stdio.h &gt;<br>
+              int main(){ 
+                printf("HELLO WEB!");
+              }          
+              // emcc hello.c -o hello.js
+              
+            </code></pre>
+          </div>
           <input type="button" id="start" value="start" class="button-9" role="button" />
           <script src="hello.js"></script>
           <p>emscripten создаёт два файла это a.out.js и a.out.wasm. второй это WebAssembly файл содержащий
@@ -214,9 +219,9 @@
         </section>
 
         <section>
-          
-            <pre><code>
-              #include &lt;stdio.h&gt;
+            <div id="" style="overflow-y:auto;">
+              <pre><code>
+                #include &lt;stdio.h&gt;
                 #include &lt;emscripten.h&gt;
                 
                 EMSCRIPTEN_KEEPALIVE
@@ -225,17 +230,18 @@
                   return first + second;
                 }
                 EMSCRIPTEN_KEEPALIVE
-                int main()
-                {
-                
-                }
-            </code></pre>
+                int main(){}
+                //emcc add.c -o add.js -s NO_EXIT_RUNTIME=1 -s EXPORTED_RUNTIME_METHODS=[ccall]
+              </code></pre>
+            </div>
 
-        </section>
-
-        <section>
-  
-          <script>
+          <input class="inp-sex" type="number" id="a">
+          <input class="inp-sex" type="number" id="b">
+          <button class="button-9" role="button" onclick="run_add()">ADD</button>
+          <div id="log">
+            
+          </div>
+            <script>
             function run_add() {
               console.log = function (message) {
                 var logger = document.getElementById('log');
@@ -247,18 +253,9 @@
               console.log(res);
             }
           </script>
-  
-          <input class="inp-sex" type="number" id="a">
-          <input class="inp-sex" type="number" id="b">
-          <button class="button-9" role="button" onclick="run_add()">ADD</button>
-          <div id="log">
-            <p>команда которой мы собрали это<br>
-              &gt; emcc add.c -o add.js -s NO_EXIT_RUNTIME=1 -s EXPORTED_RUNTIME_METHODS=[ccall]</p>
-          </div>
-  
         </section>
   
-        <section>
+       <!-- <section>
           <h1>декомпилируем</h1><br>
           &gt; emcc simplest.c -c -o hello.o<br>
           &gt; wasm-decompile hello.o <br>
@@ -286,14 +283,38 @@
             </code></pre>
           </div>
           </section>
+          <section>-->
+            <!--<h1>Модный метод подключения wasm</h1><br>
+            <div id="" style="overflow-y:auto;">
+              <pre><code>
+                WebAssembly.instantiateStreaming(fetch("myModule.wasm"), importObject).then(
+                  (obj) => {
+                    // Call an exported function:
+                    obj.instance.exports.exported_func();
+                  },
+                );
+              </code></pre>
+              <script>
+         const importObject = {
+  my_namespace: { imported_func: (arg) => console.log(arg) },
+};
+                WebAssembly.instantiateStreaming(fetch("hello2.wasm"), importObject).then(
+                  (obj) => {
+                    // Call an exported function:
+                    console.log(obj.instance.exports.main());
+                  },
+                );
+              </script>
+            </div>
+          </section>
         <section>
-          <h1>что внутри .wasm?</h1><br>
+
           <img src="bin_wasm.png" alt="fuck!" />
           <p><a href="https://webassembly.github.io/wabt/demo/wasm2wat/">Wasm2Wat</a></p>
         </section>
 
         <section>
-          <h1>как работает этот байт код?</h1><br>
+          
           <div id="" style="overflow-y:auto;">
             <pre><code>
                     00 61 73 6d 01 00 00 00 |.asm....|
@@ -306,7 +327,7 @@
           </div>
         
         </section>
-        <section>
+      <section>
           <div id="" style="overflow-y:auto;">
             <pre><code>
 00 61 73 6d 01 00 00 00 01 07 01 60 02 7f 7f 01 |.asm.......`....|
@@ -325,48 +346,112 @@
  </code></pre>
  </div>
 
-      </section>
+      </section>-->
       <section>
-        <div id="" style="overflow-y:auto;">
+        <h1>что внутри .wasm? и как это выглядит</h1><br>
+        
           <pre><code>
+(module
+ (func $add (param $A i32) (param $B i32) (result i32)
+local.get $A
+local.get $B
+i32.add  )
+(func $sub (param $C i32) (param $D i32) (result i32)
+local.get $C
+local.get $D
+i32.sub  ))
+                     
 00 61 73 6d 01 00 00 00 01 07 01 60 02 7f 7f 01 |.asm.......`....|
 7f 03 03 02 00 00 0a 11 02 07 00 20 00 20 01 6a |........... . .j|
 0b 07 00 20 00 20 01 6b 0b                      |... . .k.|
             
-                  
-                </code></pre>
-        </div>
-        <div id="" style="overflow-y:auto;">
-          <pre><code>
- (module
- (func $add (param $A i32) (param $B i32) (result i32)
-   local.get $A
-   local.get $B
-   i32.add  )
- (func $sub (param $C i32) (param $D i32) (result i32)
-  local.get $C
-  local.get $D
-  i32.sub  ))
-          
+0000000: 0061 736d ; WASM_BINARY_MAGIC
+0000004: 0100 0000 ; WASM_BINARY_VERSION
+; section "Type" (1)
+0000008: 01 ; section code
+0000009: 00 ; section size (guess)
+000000a: 01 ; num types
+; func type 0
+000000b: 60 ; func
+000000c: 02 ; num params
+000000d: 7f ; i32
+000000e: 7f ; i32
+000000f: 01 ; num results
+0000010: 7f ; i32
+0000009: 07 ; FIXUP section size
+; section "Function" (3)
+0000011: 03 ; section code
+0000012: 00 ; section size (guess)
+0000013: 02 ; num functions
+0000014: 00 ; function 0 signature index
+0000015: 00 ; function 1 signature index
+0000012: 03 ; FIXUP section size
+; section "Code" (10)
+0000016: 0a ; section code
+0000017: 00 ; section size (guess)
+0000018: 02 ; num functions
+; function body 0
+0000019: 00 ; func body size (guess)
+000001a: 00 ; local decl count
+000001b: 20 ; local.get
+000001c: 00 ; local index
+000001d: 20 ; local.get
+000001e: 01 ; local index
+000001f: 6a ; i32.add
+0000020: 0b ; end
+0000019: 07 ; FIXUP func body size
+; function body 1
+0000021: 00 ; func body size (guess)
+0000022: 00 ; local decl count
+0000023: 20 ; local.get
+0000024: 00 ; local index
+0000025: 20 ; local.get
+0000026: 01 ; local index
+0000027: 6b ; i32.sub
+0000028: 0b ; end
+0000021: 07 ; FIXUP func body size
+0000017: 11 ; FIXUP section size
+
 </code></pre>
-</div>
-i32_ADD: 0x6A, i32_SUB: 0x6B, GET: 0x20<br>
-<u>0b 07 00 20 00 20 01 6b 0b</u>
+        
 <!--https://github.com/shmishtopher/wasm-opcodes-->
     </section>
     <section>
       <h1>Зачем?</h1><br>
-        <img src="https://png.klev.club/uploads/posts/2024-04/thumbs/png-klev-club-rgza-p-dumaet-smailik-png-2.png" width="20%" height="20%"/><br>
+        <img src="https://png.klev.club/uploads/posts/2024-04/thumbs/png-klev-club-rgza-p-dumaet-smailik-png-2.png" width="10%" height="10%"/><br>
       <p>
         все яндекс игры написаные на unity, все сложные приложения по типу Figma работающие в браузере
-        используют wasm для вычислений на стороне клиента.
-        <br>
-        также wasm применяют на стороне сервера для запуска llm в онлайн компиляторах (см. WasmEdge) <br> 
-
-        <a href ="https://files.unity3d.com/jonas/AngryBots">вот игра на юнити</a>
+        используют wasm для вычислений на стороне клиента. 
+        также wasm применяют на стороне сервера для запуска онлайн компиляторов (см. WasmEdge)
+        можно эмулировать DOS/NES/C64 и многие другие для игр и софта. <br>
+        <a href ="https://files.unity3d.com/jonas/AngryBots">вот игра на юнити</a>, она показывает всю силу wasm!
       </p>
 
     </section>
+
+ <section>
+
+  <script>
+    function run_wasm() {
+      c = document.querySelector("#c").value;
+      console.log(math.MO(c));
+    }
+    import fs from 'fs'
+    const mathwasm = fs.readFileSync('./test.wasm');
+    const math = await WebAssembly.instantiate(new Uint8Array(mathwasm)).then(res => res.instance.exports);
+    console.log = function (message) {
+      var logger = document.getElementById('log-wasm');
+      logger.innerHTML += message + " ";
+    }
+
+  </script>
+
+<input class="inp-sex" type="number" id="c">
+<button class="button-9" role="button" onclick="run_wasm()" >wasm</button>
+<div id="log-wasm"></div>
+
+</section>
+
     </div>
   </div>
 
