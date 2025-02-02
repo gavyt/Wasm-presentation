@@ -19,6 +19,24 @@ crhbgns scripts
 
 -->
   <style>
+.whole
+{
+    position:fixed;
+    padding:0;
+    margin:0;
+
+    top:0;
+    left:0;
+
+    width: 100%;
+    height: 100%;
+}
+
+    .emscripten { padding-right: 0; margin-left: auto; margin-right: auto; display: block; }
+      div.emscripten { text-align: center; }      
+      div.emscripten_border { border: 1px solid black; }
+      /* the canvas *must not* have any border or padding, or mouse coords will be wrong */
+      canvas.emscripten { border: 0px none; background-color: black; }
     /* CSS */
     .inp-sex {
       width: "100%";
@@ -345,11 +363,11 @@ crhbgns scripts
    ))
  </code></pre>
  </div>
-
+<h1>что внутри .wasm? и как это выглядит</h1><br>
       </section>-->
       <section>
-        <h1>что внутри .wasm? и как это выглядит</h1><br>
         
+        <div >
           <pre><code>
 (module
  (func $add (param $A i32) (param $B i32) (result i32)
@@ -412,7 +430,7 @@ i32.sub  ))
 0000021: 07 ; FIXUP func body size
 0000017: 11 ; FIXUP section size
 
-</code></pre>
+</code></pre></div>
         
 <!--https://github.com/shmishtopher/wasm-opcodes-->
     </section>
@@ -429,7 +447,7 @@ i32.sub  ))
 
     </section>
 
- <section>
+ <!--<section>
 
   <script>
     function run_wasm() {
@@ -449,9 +467,101 @@ i32.sub  ))
 <input class="inp-sex" type="number" id="c">
 <button class="button-9" role="button" onclick="run_wasm()" >wasm</button>
 <div id="log-wasm"></div>
+<h1>как wasm интегрируется в html?</h1>
+никак.<br>
+покрайней мере методы подключения из файла или fetch командой мне не понравились. 
 
 </section>
 
+<section>
+
+  <canvas class="emscripten" id="canvas" oncontextmenu="event.preventDefault()" tabindex=-1></canvas>
+    <textarea id="output" rows="8"></textarea>
+
+    <script type='text/javascript'>
+      var statusElement = document.getElementById('status');
+      var progressElement = document.getElementById('progress');
+      var spinnerElement = document.getElementById('spinner');
+
+      var Module = {
+        preRun: [],
+        postRun: [],
+        print: (function() {
+          var element = document.getElementById('output');
+          if (element) element.value = ''; // clear browser cache
+          return function(text) {
+            if (arguments.length > 1) text = Array.prototype.slice.call(arguments).join(' ');
+            // These replacements are necessary if you render to raw HTML
+            //text = text.replace(/&/g, "&amp;");
+            //text = text.replace(/</g, "&lt;");
+            //text = text.replace(/>/g, "&gt;");
+            //text = text.replace('\n', '<br>', 'g');
+            console.log(text);
+            if (element) {
+              element.value += text + "\n";
+              element.scrollTop = element.scrollHeight; // focus on bottom
+            }
+          };
+        })(),
+        canvas: (function() {
+          var canvas = document.getElementById('canvas');
+
+          // As a default initial behavior, pop up an alert when webgl context is lost. To make your
+          // application robust, you may want to override this behavior before shipping!
+          // See http://www.khronos.org/registry/webgl/specs/latest/1.0/#5.15.2
+          canvas.addEventListener("webglcontextlost", function(e) { alert('WebGL context lost. You will need to reload the page.'); e.preventDefault(); }, false);
+
+          return canvas;
+        })(),
+        setStatus: function(text) {
+          if (!Module.setStatus.last) Module.setStatus.last = { time: Date.now(), text: '' };
+          if (text === Module.setStatus.last.text) return;
+          var m = text.match(/([^(]+)\((\d+(\.\d+)?)\/(\d+)\)/);
+          var now = Date.now();
+          if (m && now - Module.setStatus.last.time < 30) return; // if this is a progress update, skip it if too soon
+          Module.setStatus.last.time = now;
+          Module.setStatus.last.text = text;
+          if (m) {
+            text = m[1];
+            progressElement.value = parseInt(m[2])*100;
+            progressElement.max = parseInt(m[4])*100;
+            progressElement.hidden = false;
+            spinnerElement.hidden = false;
+          } else {
+            progressElement.value = null;
+            progressElement.max = null;
+            progressElement.hidden = true;
+            if (!text) spinnerElement.style.display = 'none';
+          }
+          statusElement.innerHTML = text;
+        },
+        totalDependencies: 0,
+        monitorRunDependencies: function(left) {
+          this.totalDependencies = Math.max(this.totalDependencies, left);
+          Module.setStatus(left ? 'Preparing... (' + (this.totalDependencies-left) + '/' + this.totalDependencies + ')' : 'All downloads complete.');
+        }
+      };
+      Module.setStatus('Downloading...');
+      window.onerror = function(event) {
+        // TODO: do not warn on ok events like simulating an infinite loop or exitStatus
+        Module.setStatus('Exception thrown, see JavaScript console');
+        spinnerElement.style.display = 'none';
+        Module.setStatus = function(text) {
+          if (text) Module.printErr('[post-exception status] ' + text);
+        };
+      };
+    </script>
+    <script async type="text/javascript" src="face.js"></script>
+
+</section>-->
+<section>
+
+  <h1>минусы wasm</h1>
+  1. прирост производительности всего 5%<br>
+  2. нет прямого доступа к DOM<br>
+  3. иногда не работает<br>
+
+</section>
     </div>
   </div>
 
